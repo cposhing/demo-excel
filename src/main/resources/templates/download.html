@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Download</title>
+</head>
+<body>
+<h1>Download File</h1>
+<button id="downloadBtn">Download File</button>
+
+<script>
+    document.getElementById('downloadBtn').addEventListener('click', async () => {
+        // 请求后端获取 Data URL
+        const response = await fetch('/getDataUrl');
+        if (!response.ok) {
+            alert('Failed to fetch Data URL');
+            return;
+        }
+
+        const dataUrl = await response.text();
+
+        // 动态创建 <a> 标签并触发下载
+        const fileName = 'example.xlsx'; // 指定下载的文件名
+        const downloadLink = document.createElement('a');
+        downloadLink.href = dataUrl;
+        downloadLink.download = fileName;
+
+        // 触发下载
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    });
+</script>
+</body>
+</html>
